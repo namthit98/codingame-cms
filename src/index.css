@@ -60,3 +60,8 @@ code {
 .list-hover:hover strong {
   color: #1890ff !important;
 }
+
+.steps-content {
+  height: 70vh;
+  margin: 10px 0;
+}
