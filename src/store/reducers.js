@@ -1,4 +1,5 @@
 import { combineReducers } from "redux";
+import { reducer as formReducer } from 'redux-form'
 
 // Front
 import Layout from "./layout/reducer";
@@ -14,6 +15,7 @@ const rootReducer = combineReducers({
   Login,
   //   Account,
   ForgetPassword,
+  form: formReducer
 });
 
 export default rootReducer;

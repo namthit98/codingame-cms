@@ -10,6 +10,9 @@ import VerticalLayout from "./components/VerticalLayout/";
 import NonAuthLayout from "./components/NonAuthLayout";
 
 import "./assets/scss/theme.scss";
+import "react-datepicker/dist/react-datepicker.css";
+import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
+
 
 function App() {
   return (
