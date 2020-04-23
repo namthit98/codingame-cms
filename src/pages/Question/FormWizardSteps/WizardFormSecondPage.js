@@ -2,14 +2,11 @@ import React from "react";
 import { reduxForm, Field } from "redux-form";
 import validate from "./validate";
 import { Row, Col } from "reactstrap";
+import Editor from "../../../components/Editor";
 
 const WizardFormSecondPage = (props) => {
   const { handleSubmit, previousPage } = props;
-  return (
-    <form onSubmit={handleSubmit}>
-      <Field name="tessttt" component="input" />
-    </form>
-  );
+  return <Editor />;
 };
 
 export default reduxForm({

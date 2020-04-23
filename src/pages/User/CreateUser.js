@@ -22,6 +22,10 @@ import Dropzone from "react-dropzone";
 //Import Breadcrumb
 import Breadcrumbs from "../../components/Common/Breadcrumb";
 
+// const FormValidations = () => {
+  
+// }
+
 class FormValidations extends Component {
   constructor(props) {
     super(props);
@@ -61,12 +65,16 @@ class FormValidations extends Component {
     return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + " " + sizes[i];
   };
 
+  handleValidSubmit(event, values) {
+    console.log(values)
+  }
+
   render() {
     return (
       <React.Fragment>
         <div className="page-content">
           <div className="container-fluid">
-            <AvForm>
+            <AvForm onValidSubmit={this.handleValidSubmit}>
               <Breadcrumbs title="Home" breadcrumbItem="Create User" />
 
               <Row>
@@ -77,18 +85,18 @@ class FormValidations extends Component {
 
                       <AvField
                         name="firstname"
-                        label="Fistname"
-                        placeholder="Input Firstname"
+                        label="Fist Name"
+                        placeholder="Input First Nname"
                         type="text"
-                        errorMessage="Enter Firstname"
+                        errorMessage="Enter First Name"
                         validate={{ required: { value: true } }}
                       />
                       <AvField
                         name="lastname"
-                        label="Lastname"
-                        placeholder="Input Lastname"
+                        label="Last Name"
+                        placeholder="Input Last Name"
                         type="text"
-                        errorMessage="Enter Lastname"
+                        errorMessage="Enter Last Name"
                         validate={{ required: { value: true } }}
                       />
                       <AvField
@@ -215,7 +223,7 @@ class FormValidations extends Component {
 
                       <AvField
                         label="Re-password"
-                        name="password1"
+                        name="repassword"
                         type="password"
                         placeholder="Re-type Password"
                         errorMessage="Enter Re-password"
@@ -227,15 +235,11 @@ class FormValidations extends Component {
                           },
                         }}
                       />
-                      <AvField
-                        type="select"
-                        name="Role"
-                        label="Role"
-                      >
-                        <option>Admin</option>
-                        <option>Manager</option>
-                        <option>Collaborator</option>
-                        <option>User</option>
+                      <AvField type="select" name="role" label="Role">
+                        <option value="admin">Admin</option>
+                        <option value="manager">Manager</option>
+                        <option value="collaborator">Collaborator</option>
+                        <option value="user">User</option>
                       </AvField>
                       <FormGroup className="mb-0">
                         <div>

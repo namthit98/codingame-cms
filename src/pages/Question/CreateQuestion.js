@@ -43,8 +43,11 @@ class FormWizard extends Component {
               <Col sm="12">
                 <Card className="create-question-card">
                   <CardBody>
-                    <CardTitle></CardTitle>
-
+                    <CardTitle>
+                      {pageRoot === 1 && "Information"}
+                      {pageRoot === 2 && "Coding"}
+                      {pageRoot === 3 && "Testing"}
+                    </CardTitle>
                     {pageRoot === 1 && (
                       <WizardFormFirstPageRoot onSubmit={this.nextPageRoot} />
                     )}
