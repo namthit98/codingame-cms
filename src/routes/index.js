@@ -38,9 +38,10 @@ import { Redirect } from "react-router-dom";
 
 // // Authentication related pages
 import Login from "../pages/Authentication/Login";
-// import Logout from "../pages/Authentication/Logout";
+import Logout from "../pages/Authentication/Logout";
 // import Register from "../pages/Authentication/Register";
 import ForgetPwd from "../pages/Authentication/ForgetPassword";
+import ChangePassword from "../pages/Authentication/ChangePassord";
 
 // // Inner Authentication
 // import Login1 from "../pages/AuthenticationInner/Login";
@@ -122,43 +123,54 @@ import Dashboard from "../pages/Dashboard/index";
 // import ContactsProfile from "../pages/Contacts/contacts-profile";
 
 // Users
-import CreateUser from '../pages/User/CreateUser'
-import ListUser from '../pages/User/ListUser'
+import CreateUser from "../pages/User/CreateUser";
+import ListUser from "../pages/User/ListUser";
 
 // Questions
-import CreateQuestion from '../pages/Question/CreateQuestion'
+import CreateQuestion from "../pages/Question/CreateQuestion";
+import Profile from "../pages/User/Profile";
+import ListQuestions from "../pages/Question/ListQuestions";
+import ReviewQuestion from "../pages/Question/ReviewQuestion";
+import Level from "../pages/Level";
+import ViewQuestion from "../pages/Question/ViewQuestion";
 
 const authProtectedRoutes = [
+  { path: "/dashboard", component: Dashboard },
 
-	{ path: "/dashboard", component: Dashboard },
+  // User
+  { path: "/users/change-password", component: ChangePassword },
+  { path: "/users/profile", component: Profile },
+  { path: "/users/create", component: CreateUser },
+  { path: "/users", component: ListUser },
 
-	// User
-	{ path: "/users/create", component: CreateUser },
-	{ path: "/users", component: ListUser },
+  // Question
+  { path: "/questions/:questionId/view", component: ViewQuestion },
+  { path: "/questions/create", component: CreateQuestion },
+  { path: "/questions/review", component: ReviewQuestion },
+  { path: "/questions", component: ListQuestions },
 
-	// Question
-	{ path: "/questions/create", component: CreateQuestion },
+  // Level 
+  { path: "/levels", component: Level },
 
-
-	// this route should be at the end of all other routes
-	{ path: "/", exact: true, component: () => <Redirect to="/dashboard" /> }
+  // this route should be at the end of all other routes
+  { path: "/", exact: true, component: () => <Redirect to="/dashboard" /> },
 ];
 
 const publicRoutes = [
-	// { path: "/logout", component: Logout },
-	{ path: "/login", component: Login },
-	{ path: "/forget-password", component: ForgetPwd },
-	// { path: "/register", component: Register },
+  { path: "/logout", component: Logout },
+  { path: "/login", component: Login },
+  { path: "/forget-password", component: ForgetPwd },
+  // { path: "/register", component: Register },
 
-	// { path: "/pages-maintenance", component: PagesMaintenance },
-	// { path: "/pages-comingsoon", component: PagesComingsoon },
-	// { path: "/pages-404", component: Pages404 },
-	// { path: "/pages-500", component: Pages500 },
+  // { path: "/pages-maintenance", component: PagesMaintenance },
+  // { path: "/pages-comingsoon", component: PagesComingsoon },
+  // { path: "/pages-404", component: Pages404 },
+  // { path: "/pages-500", component: Pages500 },
 
-	// //Authentication Inner
-	// { path: "/pages-login", component: Login1 },
-	// { path: "/pages-register", component: Register1 },
-	// { path: "/pages-forget-pwd", component: ForgetPwd1 }
+  // //Authentication Inner
+  // { path: "/pages-login", component: Login1 },
+  // { path: "/pages-register", component: Register1 },
+  // { path: "/pages-forget-pwd", component: ForgetPwd1 }
 ];
 
 export { authProtectedRoutes, publicRoutes };

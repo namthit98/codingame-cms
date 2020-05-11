@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 
-import { connect } from "react-redux";
+import { connect, useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
 // import { } from "../../store/actions";
 
@@ -11,6 +11,8 @@ import SimpleBar from "simplebar-react";
 import { Link } from "react-router-dom";
 
 const SidebarContent = (props) => {
+  const { user } = useSelector((state) => state.Login);
+
   return (
     <>
       <div id="sidebar-menu">
@@ -19,45 +21,60 @@ const SidebarContent = (props) => {
           <li>
             <Link to="/dashboard" className="waves-effect">
               <i className="bx bx-home-circle"></i>
-              <span className="badge badge-pill badge-info float-right">3</span>
+              {/* <span className="badge badge-pill badge-info float-right">3</span> */}
               <span>Dashboard</span>
             </Link>
           </li>
 
-          <li className="menu-title">User</li>
-          <li>
-            <Link to="/users/create" className="waves-effect">
-              <i className="bx bx-home-circle"></i>
-              <span>Create User</span>
-            </Link>
-          </li>
-          <li>
-            <Link to="/users" className="waves-effect">
-              <i className="bx bx-home-circle"></i>
-              <span>List Users</span>
-            </Link>
-          </li>
+          {["admin", "manager"].includes(user ? user.role : "") ? (
+            <>
+              <li className="menu-title">User</li>
+              <li>
+                <Link to="/users/create" className="waves-effect">
+                  <i className="bx bx-home-circle"></i>
+                  <span>Create User</span>
+                </Link>
+              </li>
+              <li>
+                <Link to="/users" className="waves-effect">
+                  <i className="bx bx-home-circle"></i>
+                  <span>List Users</span>
+                </Link>
+              </li>{" "}
+            </>
+          ) : null}
 
           <li className="menu-title">Question</li>
-          <li>
-            <Link to="/questions/create" className="waves-effect">
-              <i className="bx bx-home-circle"></i>
-              <span>Create Question</span>
-            </Link>
-          </li>
-          <li>
-            <Link to="/questions" className="waves-effect">
-              <i className="bx bx-home-circle"></i>
-              <span>List Questions</span>
-            </Link>
-          </li>
-          <li>
-            <Link to="/questions/review" className="waves-effect">
-              <i className="bx bx-home-circle"></i>
-              <span>Review Questions</span>
-            </Link>
-          </li>
+          {["collaborator"].includes(user ? user.role : "") ? (
+            <>
+              {" "}
+              <li>
+                <Link to="/questions/create" className="waves-effect">
+                  <i className="bx bx-home-circle"></i>
+                  <span>Create Question</span>
+                </Link>
+              </li>
+              <li>
+                <Link to="/questions" className="waves-effect">
+                  <i className="bx bx-home-circle"></i>
+                  <span>List Questions</span>
+                </Link>
+              </li>
+            </>
+          ) : null}
 
+          {["admin", "manager"].includes(user ? user.role : "") ? (
+            <>
+              <li>
+                <Link to="/questions/review" className="waves-effect">
+                  <i className="bx bx-home-circle"></i>
+                  <span>Review Questions</span>
+                </Link>
+              </li>
+            </>
+          ) : null}
+
+          {/* 
           <li className="menu-title">Game</li>
           <li>
             <Link to="/levels" className="waves-effect">
@@ -70,15 +87,15 @@ const SidebarContent = (props) => {
               <i className="bx bx-home-circle"></i>
               <span>Assign question</span>
             </Link>
-          </li>
-
+          </li> */}
+          {/* 
           <li className="menu-title">Other</li>
           <li>
             <Link to="/login" className="waves-effect">
               <i className="bx bx-home-circle"></i>
               <span>Logout</span>
             </Link>
-          </li>
+          </li> */}
         </ul>
       </div>
     </>

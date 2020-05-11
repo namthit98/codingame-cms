@@ -6,14 +6,16 @@ import Breadcrumbs from "../../components/Common/Breadcrumb";
 import { listUser, updateStatus } from "../../api/user.api";
 import { CORE } from "../../constants";
 import { toast } from "react-toastify";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import user1 from "../../assets/images/users/avatar-1.jpg";
 import { format } from "date-fns";
+import { listQuestions } from "../../api/question.api";
 
-const ListUsers = () => {
+const ListQuestions = () => {
   const [data, setData] = React.useState([]);
   const [modalOpen, setModalOpen] = useState(false);
   const [userTarget, setUserTarget] = useState(null);
+  const history = useHistory();
 
   const _handleUpdateStatus = async (user) => {
     const result = await updateStatus(user);
@@ -36,84 +38,103 @@ const ListUsers = () => {
 
   const columns = React.useMemo(
     () => [
+      //   {
+      //     id: "code",
+      //     Header: "code",
+      //     accessor: (question) => {
+      //       return "#";
+      //       //   console.log(user.avatar);
+      //       //   return user.avatar === null ? (
+      //       //     <div className="avatar-xs">
+      //       //       <span className="avatar-title rounded-circle">
+      //       //         {user.firstname.charAt(0)}
+      //       //       </span>
+      //       //     </div>
+      //       //   ) : (
+      //       //     <div>
+      //       //       <img
+      //       //         className="rounded-circle avatar-xs"
+      //       //         src={CORE.S3_URL + "/" + user.avatar}
+      //       //         alt=""
+      //       //       />
+      //       //     </div>
+      //       //   );
+      //     },
+      //   },
       {
-        id: "avatar",
-        Header: "#",
-        accessor: (user) => {
-          console.log(user.avatar);
-          return user.avatar === null ? (
-            <div className="avatar-xs">
-              <span className="avatar-title rounded-circle">
-                {user.firstname.charAt(0)}
-              </span>
-            </div>
-          ) : (
-            <div>
-              <img
-                className="rounded-circle avatar-xs"
-                src={CORE.S3_URL + "/" + user.avatar}
-                alt=""
-              />
-            </div>
-          );
-        },
+        Header: "Code",
+        accessor: "code",
       },
       {
-        Header: "First Name",
-        accessor: "firstname",
+        Header: "Title",
+        accessor: "title",
       },
       {
-        Header: "Last Name",
-        accessor: "lastname",
+        Header: "Language",
+        accessor: "language",
       },
       {
-        Header: "Email",
-        accessor: "email",
+        Header: "Difficult",
+        accessor: "difficult",
       },
       {
-        Header: "Role",
-        accessor: "role",
-      },
-      {
-        id: "status",
+        id: "isAccepted",
         Header: "Status",
-        accessor: (user) => {
+        accessor: (question) => {
           return (
-            <div className="custom-control custom-switch mb-2" dir="ltr">
-              <input
-                type="checkbox"
-                className="custom-control-input"
-                id={user._id}
-                checked={user.isActived}
-                disabled={user.role === "admin"}
-              />
-              <label
-                disabled={user.role === "admin"}
-                className="custom-control-label"
-                htmlFor={user._id}
-                onClick={(e) => {
-                  if (user.role === "admin") return;
-                  _handleUpdateStatus(user);
-                }}
-              ></label>
-            </div>
+            // <span class={`badge ${question.isAccepted ? "badge-success" : "badge-danger"} font-size-11 m-1`}>
+            //   {question.isAccepted ? "Accepted" : "Not Accepted"}
+            // </span>
+            <span class={`font-size-12 ${question.isAccepted ? "badge-soft-success" : "badge-soft-danger"} badge ${question.isAccepted ? "badge-success" : "badge-danger"} badge-pill`}>{question.isAccepted ? "Accepted" : "Not Accepted"}</span>
+            // <div className="custom-control custom-switch mb-2" dir="ltr">
+            //   <input
+            //     type="checkbox"
+            //     className="custom-control-input"
+            //     id={user._id}
+            //     checked={user.isActived}
+            //   />
+            //   <label
+            //     className="custom-control-label"
+            //     htmlFor={user._id}
+            //     onClick={(e) => {
+            //       _handleUpdateStatus(user);
+            //     }}
+            //   ></label>
+            // </div>
           );
         },
       },
+      // {
+      //   id: "action",
+      //   Header: "Action",
+      //   accessor: (question) => {
+      //     return (
+      //       <>
+      //         <button
+      //           className="btn btn-primary btn-sm waves-effect waves-light"
+      //           onClick={() => {
+      //             history.push(`/questions/${question._id}/edit`);
+      //           }}
+      //         >
+      //           Edit
+      //         </button>
+      //       </>
+      //     );
+      //   },
+      // },
       {
         id: "action",
         Header: "Action",
-        accessor: (user) => {
+        accessor: (question) => {
           return (
             <>
               <button
                 className="btn btn-primary btn-sm waves-effect waves-light"
                 onClick={() => {
-                  setUserTarget(user);
-                  toggleModal();
+                  history.push(`/questions/${question._id}/view`);
                 }}
               >
-                View
+                view
               </button>
             </>
           );
@@ -149,7 +170,7 @@ const ListUsers = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const result = await listUser();
+      const result = await listQuestions();
 
       if (result && result.success) {
         setData(result.data);
@@ -169,7 +190,7 @@ const ListUsers = () => {
     <React.Fragment>
       <div className="page-content">
         <div className="container-fluid">
-          <Breadcrumbs title="Home" breadcrumbItem="List User" />
+          <Breadcrumbs title="Home" breadcrumbItem="List Question" />
           <Card>
             <CardBody>
               <MaterialTable
@@ -289,4 +310,4 @@ const ListUsers = () => {
   );
 };
 
-export default ListUsers;
+export default ListQuestions;

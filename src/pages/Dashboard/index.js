@@ -32,8 +32,10 @@ import LatestTranaction from "./LatestTranaction";
 
 //Import Breadcrumb
 import Breadcrumbs from "../../components/Common/Breadcrumb";
+import { useSelector } from "react-redux";
 
 const Dashboard = () => {
+  const { user } = useSelector(state => state.Login)
   const [reports] = useState([
     { title: "Orders", iconClass: "bx-copy-alt", description: "1,235" },
     {
@@ -67,7 +69,7 @@ const Dashboard = () => {
 
           <Row>
             <Col xl="4">
-              <WelcomeComp />
+              <WelcomeComp user={user} />
               <MonthlyEarning />
             </Col>
             <Col xl="8">
@@ -122,7 +124,7 @@ const Dashboard = () => {
                     </ul>
                   </div>
                   <div className="clearfix"></div>
-                  <div style={{ height: 375 }}>
+                  <div style={{ height: 354 }}>
                     <LineBar style={{ height: "100%" }} />
                   </div>
                 </CardBody>
@@ -130,7 +132,7 @@ const Dashboard = () => {
             </Col>
           </Row>
 
-          <Row>
+          {/* <Row>
             <Col xl="4">
               <SocialSource />
             </Col>
@@ -141,7 +143,7 @@ const Dashboard = () => {
             <Col xl="4">
               <TopCities />
             </Col>
-          </Row>
+          </Row> */}
 
           <Row>
             <Col lg="12">

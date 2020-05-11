@@ -1,20 +1,23 @@
 import React, { Component } from "react";
-
+import store from 'store-js'
 import { Row, Col, CardBody, Card, Alert } from "reactstrap";
 
 // Redux
 import { connect } from "react-redux";
-import { withRouter, Link } from "react-router-dom";
+import { withRouter, Link, Redirect } from "react-router-dom";
 
 // availity-reactstrap-validation
 import { AvForm, AvField } from "availity-reactstrap-validation";
 
 // actions
-import { loginUser, apiError } from "../../store/actions";
+import { loginUser, apiError, loginSuccess } from "../../store/actions";
 
 // import images
 import profile from "../../assets/images/profile-img.png";
 import logo from "../../logo.svg";
+import { login } from "../../api/auth.api";
+import { handleError } from "../../libs/handle-error";
+import { toast } from "react-toastify";
 
 class Login extends Component {
   constructor(props) {
@@ -26,15 +29,33 @@ class Login extends Component {
   }
 
   // handleValidSubmit
-  handleValidSubmit(event, values) {
-    this.props.loginUser(values, this.props.history);
+  async handleValidSubmit(event, values) {
+    try {
+      const result = await login({
+        ...values,
+      });
+
+      if (result && result.success) {
+        this.props.history.push('/dashboard')
+        this.props.loginSuccess(result.data)
+        store.remove('user')
+        store.set("user", JSON.stringify(result.data))
+        toast.success(result.message);
+      }
+    } catch (err) {
+      handleError(err);
+      console.log(err, "error");
+    }
   }
 
   componentDidMount() {
-    this.props.apiError("");
+    // if(this.props.)
+    // this.props.apiError("");
   }
 
   render() {
+    if(this.props.user) return <Redirect to="/dashboard" />
+
     return (
       <React.Fragment>
         <div className="home-btn d-none d-sm-block">
@@ -86,7 +107,7 @@ class Login extends Component {
                           <AvField
                             name="email"
                             label="Email"
-                            value="admin@themesbrand.com"
+                            value="namthit98@gmail.com"
                             className="form-control"
                             placeholder="Enter email"
                             type="email"
@@ -98,7 +119,7 @@ class Login extends Component {
                           <AvField
                             name="password"
                             label="Password"
-                            value="123456"
+                            value="13041998"
                             type="password"
                             required
                             placeholder="Enter Password"
@@ -155,10 +176,10 @@ class Login extends Component {
 }
 
 const mapStatetoProps = (state) => {
-  const { error } = state.Login;
-  return { error };
+  const { error, user } = state.Login;
+  return { error, user };
 };
 
 export default withRouter(
-  connect(mapStatetoProps, { loginUser, apiError })(Login)
+  connect(mapStatetoProps, { loginUser, apiError, loginSuccess })(Login)
 );

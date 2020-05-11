@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import MaterialTable from "../../components/MaterialTable";
 import makeData from "../../makeData";
-import { Card, CardBody, Modal, CardFooter, Table } from "reactstrap";
+import { Card, CardBody, Modal, CardFooter, Table, Row, Col } from "reactstrap";
 import Breadcrumbs from "../../components/Common/Breadcrumb";
 import { listUser, updateStatus } from "../../api/user.api";
 import { CORE } from "../../constants";
@@ -9,8 +9,9 @@ import { toast } from "react-toastify";
 import { Link } from "react-router-dom";
 import user1 from "../../assets/images/users/avatar-1.jpg";
 import { format } from "date-fns";
+import { AvForm, AvField } from "availity-reactstrap-validation";
 
-const ListUsers = () => {
+const Level = () => {
   const [data, setData] = React.useState([]);
   const [modalOpen, setModalOpen] = useState(false);
   const [userTarget, setUserTarget] = useState(null);
@@ -85,14 +86,11 @@ const ListUsers = () => {
                 className="custom-control-input"
                 id={user._id}
                 checked={user.isActived}
-                disabled={user.role === "admin"}
               />
               <label
-                disabled={user.role === "admin"}
                 className="custom-control-label"
                 htmlFor={user._id}
                 onClick={(e) => {
-                  if (user.role === "admin") return;
                   _handleUpdateStatus(user);
                 }}
               ></label>
@@ -147,6 +145,25 @@ const ListUsers = () => {
     );
   };
 
+  const handleValidSubmit = async (event, values) => {
+    // setLoading(true);
+    // try {
+    //   const result = await createUser({
+    //     ...values,
+    //     birthday,
+    //     role: values.role || "user",
+    //     avatar: selectedFiles && selectedFiles.length ? selectedFiles[0] : null,
+    //   });
+    //   if (result && result.success) {
+    //     toast.success(result.message);
+    //   }
+    // } catch (err) {
+    //   handleError(err);
+    //   console.log(err, "error");
+    // }
+    // setLoading(false);
+  };
+
   useEffect(() => {
     const fetchData = async () => {
       const result = await listUser();
@@ -169,18 +186,39 @@ const ListUsers = () => {
     <React.Fragment>
       <div className="page-content">
         <div className="container-fluid">
-          <Breadcrumbs title="Home" breadcrumbItem="List User" />
-          <Card>
-            <CardBody>
-              <MaterialTable
-                columns={columns}
-                data={data}
-                setData={setData}
-                updateMyData={updateMyData}
-                skipPageReset={skipPageReset}
-              />
-            </CardBody>
-          </Card>
+          <Breadcrumbs title="Home" breadcrumbItem="List Level" />
+          <Row>
+            <Col xs={12} lg={8}>
+              <Card>
+                <CardBody>
+                  <MaterialTable
+                    columns={columns}
+                    data={data}
+                    setData={setData}
+                    updateMyData={updateMyData}
+                    skipPageReset={skipPageReset}
+                  />
+                </CardBody>
+              </Card>
+            </Col>
+
+            <Col xs={12} lg={4}>
+              <Card>
+                <CardBody>
+                  <AvForm onValidSubmit={handleValidSubmit}>
+                    <AvField
+                      name="name"
+                      label="Name"
+                      placeholder="Input Name"
+                      type="text"
+                      errorMessage="Enter Name"
+                      validate={{ required: { value: true } }}
+                    />
+                  </AvForm>
+                </CardBody>
+              </Card>
+            </Col>
+          </Row>
 
           <Modal
             isOpen={modalOpen}
@@ -289,4 +327,4 @@ const ListUsers = () => {
   );
 };
 
-export default ListUsers;
+export default Level;

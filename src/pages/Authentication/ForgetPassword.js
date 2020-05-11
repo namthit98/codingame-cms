@@ -15,27 +15,45 @@ import { userForgetPassword } from "../../store/actions";
 // import images
 import profile from "../../assets/images/profile-img.png";
 import logo from "../../logo.svg";
+import { forgetPassword } from "../../api/user.api";
+import { handleError } from "../../libs/handle-error";
 
 class ForgetPasswordPage extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      loading: false
+    };
 
     // handleValidSubmit
     this.handleValidSubmit = this.handleValidSubmit.bind(this);
   }
 
   // handleValidSubmit
-  handleValidSubmit(event, values) {
-    this.props.userForgetPassword(values, this.props.history);
+  async handleValidSubmit(event, values) {
+    this.setState({
+      loading: true
+    })
+
+    try {
+      const result = await forgetPassword(values)
+
+      if (result && result.success) {
+
+      }
+    } catch (err) {
+      handleError(err);
+      console.log(err, "error");
+    }
+
+    this.setState({
+      loading: false
+    })
   }
 
   render() {
     return (
       <React.Fragment>
-        <div className="home-btn d-none d-sm-block">
-          <Link to="/" className="text-dark"><i className="fas fa-home h2"></i></Link>
-        </div>
         <div className="account-pages my-5 pt-sm-5">
           <div className="container">
             <Row className="justify-content-center">

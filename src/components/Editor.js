@@ -17,10 +17,10 @@ import 'ace-builds/src-min-noconflict/snippets/javascript'
 
 const StyledAceEditor = styled(AceEditor)`
   width: 100% !important;
-  height: 500px !important;
+  height: 470px !important;
 `
 
-const Editor = ({ saveFile, onChange, value }) => {
+const Editor = ({ readOnly, saveFile, onChange, value }) => {
   const saveFileHandler = useCallback(
     debounce(() => {
       if (saveFile) saveFile()
@@ -59,6 +59,7 @@ const Editor = ({ saveFile, onChange, value }) => {
         showLineNumbers: true,
         tabSize: 2,
       }}
+      readOnly={readOnly}
     />
   )
 }

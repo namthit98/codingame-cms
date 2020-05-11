@@ -91,7 +91,7 @@ const Header = ({ ...props }) => {
               <i className="fa fa-fw fa-bars"></i>
             </button>
 
-            <form className="app-search d-none d-lg-block">
+            {/* <form className="app-search d-none d-lg-block">
               <div className="position-relative">
                 <input
                   type="text"
@@ -100,12 +100,12 @@ const Header = ({ ...props }) => {
                 />
                 <span className="bx bx-search-alt"></span>
               </div>
-            </form>
+            </form> */}
           </div>
 
           <div className="d-flex">
             <div className="dropdown d-inline-block d-lg-none ml-2">
-              <button
+              {/* <button
                 onClick={() => {
                   setIsSearch((isSearch) => !isSearch);
                 }}
@@ -114,7 +114,8 @@ const Header = ({ ...props }) => {
                 id="page-header-search-dropdown"
               >
                 <i className="mdi mdi-magnify"></i>
-              </button>
+              </button> */}
+
               <div
                 className={
                   isSearch
@@ -141,6 +142,7 @@ const Header = ({ ...props }) => {
                   </div>
                 </form>
               </div>
+           
             </div>
 
             <div className="dropdown d-none d-lg-inline-block ml-1">
@@ -154,8 +156,8 @@ const Header = ({ ...props }) => {
               </button>
             </div>
 
-            <NotificationDropdown />
-            <ProfileMenu />
+            {/* <NotificationDropdown /> */}
+            <ProfileMenu user={props.user} />
 
             <div onClick={toggleRightbar} className="dropdown d-inline-block">
               <button
@@ -166,6 +168,7 @@ const Header = ({ ...props }) => {
               </button>
             </div>
           </div>
+        
         </div>
       </header>
     </React.Fragment>
@@ -174,7 +177,8 @@ const Header = ({ ...props }) => {
 
 const mapStatetoProps = (state) => {
   const { layoutType } = state.Layout;
-  return { layoutType };
+  const { user } = state.Login;
+  return { layoutType, user };
 };
 
 export default connect(mapStatetoProps, { toggleRightSidebar })(Header);
