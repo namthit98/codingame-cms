@@ -133,6 +133,7 @@ import ListQuestions from "../pages/Question/ListQuestions";
 import ReviewQuestion from "../pages/Question/ReviewQuestion";
 import Level from "../pages/Level";
 import ViewQuestion from "../pages/Question/ViewQuestion";
+import ResetPassword from "../pages/Authentication/ResetPassword";
 
 const authProtectedRoutes = [
   { path: "/dashboard", component: Dashboard },
@@ -142,6 +143,7 @@ const authProtectedRoutes = [
   { path: "/users/profile", component: Profile },
   { path: "/users/create", component: CreateUser },
   { path: "/users", component: ListUser },
+
 
   // Question
   { path: "/questions/:questionId/view", component: ViewQuestion },
@@ -160,6 +162,8 @@ const publicRoutes = [
   { path: "/logout", component: Logout },
   { path: "/login", component: Login },
   { path: "/forget-password", component: ForgetPwd },
+  { path: "/password/reset/:token", component: ResetPassword },
+
   // { path: "/register", component: Register },
 
   // { path: "/pages-maintenance", component: PagesMaintenance },

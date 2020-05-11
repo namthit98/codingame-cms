@@ -14,7 +14,7 @@ import {
   Media,
   Table,
 } from "reactstrap";
-import { Link } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 
 //import Charts
 import LineBar from "../../components/Common/Charts/linebarchart";
@@ -59,6 +59,8 @@ const Dashboard = () => {
   const togglemodal = () => {
     setModal((modal) => !modal);
   };
+
+  if(!user) return <Redirect to="/login" />
 
   return (
     <React.Fragment>

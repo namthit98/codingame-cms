@@ -45,3 +45,9 @@ export const forgetPassword = async ({ email }) => {
 
   return result.data;
 };
+
+export const resetPassword = async ({ newPassword, token }) => {
+  const result = await agent.patch(`/users/reset-password`, { password: newPassword, token });
+
+  return result.data;
+};

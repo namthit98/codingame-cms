@@ -6,11 +6,14 @@ import Breadcrumbs from "../../components/Common/Breadcrumb";
 import { listUser, updateStatus } from "../../api/user.api";
 import { CORE } from "../../constants";
 import { toast } from "react-toastify";
-import { Link } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 import user1 from "../../assets/images/users/avatar-1.jpg";
 import { format } from "date-fns";
+import { useSelector } from "react-redux";
 
 const ListUsers = () => {
+  const { user } = useSelector((state) => state.Login);
+
   const [data, setData] = React.useState([]);
   const [modalOpen, setModalOpen] = useState(false);
   const [userTarget, setUserTarget] = useState(null);
@@ -164,6 +167,11 @@ const ListUsers = () => {
       setUserTarget(null);
     }
   }, [modalOpen]);
+
+  if (!user) return <Redirect to="/login" />;
+
+  if (!["admin", "manager"].includes(user.role))
+    return <Redirect to="dashboard" />;
 
   return (
     <React.Fragment>

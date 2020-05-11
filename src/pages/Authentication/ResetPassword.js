@@ -16,11 +16,11 @@ import profile from "../../assets/images/profile-img.png";
 import logo from "../../logo.svg";
 import user1 from "../../assets/images/users/avatar-1.jpg";
 import { CORE } from "../../constants";
-import { changePassword } from "../../api/user.api";
+import { changePassword, resetPassword } from "../../api/user.api";
 import { handleError } from "../../libs/handle-error";
 import { toast } from "react-toastify";
 
-class ChangePassword extends Component {
+class ResetPassword extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -38,10 +38,14 @@ class ChangePassword extends Component {
     });
 
     try {
-      const result = await changePassword(values);
+      const result = await resetPassword({
+        ...values,
+        token: this.props.match.params.token,
+      });
 
       if (result && result.success) {
         toast.success(result.message);
+        this.props.history.push("/login")
       }
     } catch (err) {
       handleError(err);
@@ -54,13 +58,9 @@ class ChangePassword extends Component {
   }
 
   render() {
+    console.log();
     return (
       <React.Fragment>
-        {/* <div className="home-btn d-none d-sm-block">
-          <Link to="/" className="text-dark">
-            <i className="fas fa-home h2"></i>
-          </Link>
-        </div> */}
         <div className="account-pages my-5 pt-sm-5">
           <div className="container">
             <Row className="justify-content-center">
@@ -70,7 +70,7 @@ class ChangePassword extends Component {
                     <Row>
                       <Col className="col-7">
                         <div className="text-primary p-4">
-                          <h5 className="text-primary">Change Password</h5>
+                          <h5 className="text-primary">Reset Password</h5>
                           {/* <p>Sign in to continue to Fbeta.</p> */}
                         </div>
                       </Col>
@@ -120,19 +120,6 @@ class ChangePassword extends Component {
                       >
                         <div className="form-group">
                           <AvField
-                            name="oldPassword"
-                            label="Old Password"
-                            value=""
-                            type="password"
-                            required
-                            placeholder="Enter Old Password"
-                            errorMessage="Enter old password"
-                            validate={{ required: { value: true } }}
-                          />
-                        </div>
-
-                        <div className="form-group">
-                          <AvField
                             name="newPassword"
                             label="New Password"
                             value=""
@@ -168,7 +155,7 @@ class ChangePassword extends Component {
                               className="btn btn-primary w-md waves-effect waves-light"
                               type="submit"
                             >
-                              Change
+                              Reset
                             </button>
                           </Col>
                         </Row>
@@ -191,5 +178,5 @@ const mapStatetoProps = (state) => {
 };
 
 export default withRouter(
-  connect(mapStatetoProps, { userForgetPassword })(ChangePassword)
+  connect(mapStatetoProps, { userForgetPassword })(ResetPassword)
 );

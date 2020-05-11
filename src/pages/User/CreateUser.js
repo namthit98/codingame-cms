@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, Redirect, useHistory } from "react-router-dom";
 import {
   Row,
   Col,
@@ -23,8 +23,12 @@ import { createUser } from "../../api/user.api";
 import { toast } from "react-toastify";
 import { handleError } from "../../libs/handle-error";
 import UploadAvatar from "../../components/UploadAvatar";
+import { useSelector } from "react-redux";
 
 const CreateUser = ({ ...props }) => {
+  const { user } = useSelector(state => state.Login)
+  const history = useHistory()
+
   const [birthday, setBirthday] = useState(new Date());
   const [selectedFiles, setSelectedFiles] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -50,6 +54,7 @@ const CreateUser = ({ ...props }) => {
 
       if (result && result.success) {
         toast.success(result.message);
+        history.push('/users')
       }
     } catch (err) {
       handleError(err);
@@ -58,6 +63,10 @@ const CreateUser = ({ ...props }) => {
 
     setLoading(false);
   };
+
+  if(!user) return <Redirect to="/login" />
+
+  if(!['admin', 'manager'].includes(user.role)) return <Redirect to="dashboard" />
 
   return (
     <React.Fragment>

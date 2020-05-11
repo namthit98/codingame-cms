@@ -17,6 +17,7 @@ import profile from "../../assets/images/profile-img.png";
 import logo from "../../logo.svg";
 import { forgetPassword } from "../../api/user.api";
 import { handleError } from "../../libs/handle-error";
+import { toast } from "react-toastify";
 
 class ForgetPasswordPage extends Component {
   constructor(props) {
@@ -39,7 +40,7 @@ class ForgetPasswordPage extends Component {
       const result = await forgetPassword(values)
 
       if (result && result.success) {
-
+        toast.success("Check email, please !!!")
       }
     } catch (err) {
       handleError(err);
