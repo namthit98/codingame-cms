@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Link, Redirect } from "react-router-dom";
+import { Link, Redirect, withRouter } from "react-router-dom";
 import {
   Container,
   Row,
@@ -22,6 +22,7 @@ import profile1 from "../../assets/images/profile-img.png";
 import avatar1 from "../../assets/images/users/avatar-1.jpg";
 import { getOwn } from "../../api/user.api";
 import { CORE } from "../../constants";
+import { connect } from "react-redux";
 
 // import charts
 // import ApexRevenue from "./ApexRevenue";
@@ -285,4 +286,12 @@ class Profile extends Component {
   }
 }
 
-export default Profile;
+const mapStateToProps = (state) => {
+  const { user } = state.Login;
+  return {
+    user,
+    // values: selector(state, "coding", "testing", "description", "title", "difficult", "language"),
+  };
+};
+
+export default withRouter(connect(mapStateToProps, {})(Profile));
