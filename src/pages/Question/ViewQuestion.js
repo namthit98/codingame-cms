@@ -35,6 +35,7 @@ class CreateQuestion extends Component {
       question: null,
       result: null,
       loading: false,
+      isError: false
     };
   }
 
@@ -80,7 +81,7 @@ class CreateQuestion extends Component {
   };
 
   _handleRunTest = async () => {
-    this.setState({ loading: true });
+    this.setState({ loading: true, isError: false, result: null });
     try {
       const result = await runTest({
         coding: this.state.question.coding,
@@ -94,8 +95,11 @@ class CreateQuestion extends Component {
         });
       }
     } catch (err) {
+      this.setState({
+        isError: true
+      })
       handleError(err);
-      console.log(err, "error");
+      console.log(err.response, "error");
     }
 
     this.setState({ loading: false });
@@ -267,7 +271,7 @@ class CreateQuestion extends Component {
                             </div>
                           ) : null}
                           {this.state.result &&
-                          this.state.result.stats.passPercent !== 100 ? (
+                          this.state.result.stats.passPercent !== 100 || this.state.isError === true ? (
                             <div
                               style={{ margin: 0 }}
                               class="mb-0 alert alert-danger fade show"
