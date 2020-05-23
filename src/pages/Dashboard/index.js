@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import {
   Container,
   Row,
@@ -33,14 +33,16 @@ import LatestTranaction from "./LatestTranaction";
 //Import Breadcrumb
 import Breadcrumbs from "../../components/Common/Breadcrumb";
 import { useSelector } from "react-redux";
+import { listQuestions } from "../../api/question.api";
+import { listUser } from "../../api/user.api";
 
 const Dashboard = () => {
-  const { user } = useSelector(state => state.Login)
-  const [reports] = useState([
-    { title: "Orders", iconClass: "bx-copy-alt", description: "1,235" },
+  const { user } = useSelector((state) => state.Login);
+  const [reports, setReports] = useState([
+    { title: "Orders", iconClass: "bx-user", description: "1,235" },
     {
       title: "Revenue",
-      iconClass: "bx-archive-in",
+      iconClass: "bx-question-mark",
       description: "$35, 723",
     },
     {
@@ -49,18 +51,59 @@ const Dashboard = () => {
       description: "$16.2",
     },
   ]);
-  const [email] = useState([
-    { title: "Week", linkto: "#", isActive: false },
-    { title: "Month", linkto: "#", isActive: false },
-    { title: "Year", linkto: "#", isActive: true },
-  ]);
+  const [questions, setQuestions] = useState([]);
+  const [users, setUsers] = useState([]);
+
   const [modal, setModal] = useState(false);
 
   const togglemodal = () => {
     setModal((modal) => !modal);
   };
 
-  if(!user) return <Redirect to="/login" />
+  const questionCounter = useMemo(() => {
+    if (!user || !questions.length) return;
+    console.log("user._iduser._id", user);
+    return questions.filter((el) => el.owner.email === user.email).length;
+  }, [questions.length, user]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const result = await listQuestions();
+      const users = await listUser();
+
+      if (result && result.success) {
+        setQuestions(result.data);
+      }
+
+      if (users && users.success) {
+        setUsers(users.data);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  useEffect(() => {
+    if (!questions.length || !users.length) return;
+
+    setReports([
+      { title: "Users", iconClass: "bx-user", description: users.length },
+      {
+        title: "Questions",
+        iconClass: "bx-question-mark",
+        description: questions.length,
+      },
+      {
+        title: "Email",
+        iconClass: "bx-purchase-tag-alt",
+        description: "69",
+      },
+    ])
+  }, [questions.length, users.length]);
+
+  console.log(users);
+
+  if (!user) return <Redirect to="/login" />;
 
   return (
     <React.Fragment>
@@ -71,8 +114,8 @@ const Dashboard = () => {
 
           <Row>
             <Col xl="4">
-              <WelcomeComp user={user} />
-              <MonthlyEarning />
+              <WelcomeComp user={user} questionCounter={questionCounter} />
+              {/* <MonthlyEarning /> */}
             </Col>
             <Col xl="8">
               <Row>
@@ -104,7 +147,7 @@ const Dashboard = () => {
                 ))}
               </Row>
 
-              <Card>
+              {/* <Card>
                 <CardBody>
                   <CardTitle className="mb-4 float-sm-left">
                     Email Sent
@@ -130,7 +173,7 @@ const Dashboard = () => {
                     <LineBar style={{ height: "100%" }} />
                   </div>
                 </CardBody>
-              </Card>
+              </Card> */}
             </Col>
           </Row>
 
@@ -147,11 +190,11 @@ const Dashboard = () => {
             </Col>
           </Row> */}
 
-          <Row>
+          {/* <Row>
             <Col lg="12">
               <LatestTranaction />
             </Col>
-          </Row>
+          </Row> */}
         </Container>
       </div>
       <Modal

@@ -23,6 +23,7 @@ import avatar1 from "../../assets/images/users/avatar-1.jpg";
 import { getOwn } from "../../api/user.api";
 import { CORE } from "../../constants";
 import { connect } from "react-redux";
+import { listQuestions } from "../../api/question.api";
 
 // import charts
 // import ApexRevenue from "./ApexRevenue";
@@ -62,13 +63,22 @@ class Profile extends Component {
       { title: "Pending Projects", iconClass: "bx-hourglass", text: "12" },
       { title: "Total Revenue", iconClass: "bx-package", text: "$36,524" },
     ],
+    questions: [],
   };
 
   _fetchData = async () => {
     const result = await getOwn();
+    const questions = await listQuestions();
+
     if (result && result.success) {
       this.setState({
         user: result.results,
+      });
+    }
+
+    if (questions && questions.success) {
+      this.setState({
+        questions: questions.data,
       });
     }
   };
@@ -136,13 +146,15 @@ class Profile extends Component {
                         <div className="pt-4">
                           <Row>
                             <Col xs="6">
-                              <h5 className="font-size-15">125</h5>
-                              <p className="text-muted mb-0">Projects</p>
+                              <h5 className="font-size-15">
+                                {this.state.questions.length}
+                              </h5>
+                              <p className="text-muted mb-0">Questions</p>
                             </Col>
-                            <Col xs="6">
+                            {/* <Col xs="6">
                               <h5 className="font-size-15">$1245</h5>
                               <p className="text-muted mb-0">Revenue</p>
-                            </Col>
+                            </Col> */}
                           </Row>
                           {/* <div className="mt-4">
                             <Link
@@ -209,69 +221,47 @@ class Profile extends Component {
               <Col xl="8">
                 <Card>
                   <CardBody>
-                    <CardTitle className="mb-4">My Projects</CardTitle>
+                    <CardTitle className="mb-4">My Questions</CardTitle>
                     <div className="table-responsive">
                       <Table className="table table-nowrap table-hover mb-0">
                         <thead>
                           <tr>
-                            <th scope="col">#</th>
-                            <th scope="col">Projects</th>
-                            <th scope="col">Start Date</th>
-                            <th scope="col">Deadline</th>
-                            <th scope="col">Budget</th>
+                            <th scope="col">Code</th>
+                            <th scope="col">Title</th>
+                            <th scope="col">Language</th>
+                            <th scope="col">Difficult</th>
+                            <th scope="col">Status</th>
                           </tr>
                         </thead>
                         <tbody>
-                          <tr>
-                            <th scope="row">1</th>
-                            <td>Skote admin UI</td>
-                            <td>2 Sep, 2019</td>
-                            <td>20 Oct, 2019</td>
-                            <td>$506</td>
-                          </tr>
-
-                          <tr>
-                            <th scope="row">2</th>
-                            <td>Skote admin Logo</td>
-                            <td>1 Sep, 2019</td>
-                            <td>2 Sep, 2019</td>
-                            <td>$94</td>
-                          </tr>
-                          <tr>
-                            <th scope="row">3</th>
-                            <td>Redesign - Landing page</td>
-                            <td>21 Sep, 2019</td>
-                            <td>29 Sep, 2019</td>
-                            <td>$156</td>
-                          </tr>
-                          <tr>
-                            <th scope="row">4</th>
-                            <td>App Landing UI</td>
-                            <td>29 Sep, 2019</td>
-                            <td>04 Oct, 2019</td>
-                            <td>$122</td>
-                          </tr>
-                          <tr>
-                            <th scope="row">5</th>
-                            <td>Blog Template</td>
-                            <td>05 Oct, 2019</td>
-                            <td>16 Oct, 2019</td>
-                            <td>$164</td>
-                          </tr>
-                          <tr>
-                            <th scope="row">6</th>
-                            <td>Redesign - Multipurpose Landing</td>
-                            <td>17 Oct, 2019</td>
-                            <td>05 Nov, 2019</td>
-                            <td>$192</td>
-                          </tr>
-                          <tr>
-                            <th scope="row">7</th>
-                            <td>Logo Branding</td>
-                            <td>04 Nov, 2019</td>
-                            <td>05 Nov, 2019</td>
-                            <td>$94</td>
-                          </tr>
+                          {this.state.questions.map((question) => {
+                            return (
+                              <tr>
+                                <th scope="row">{question.code}</th>
+                                <td>{question.title}</td>
+                                <td>{question.language}</td>
+                                <td>{question.difficult}</td>
+                                <td>
+                                  {" "}
+                                  <span
+                                    class={`font-size-12 ${
+                                      question.isAccepted
+                                        ? "badge-soft-success"
+                                        : "badge-soft-danger"
+                                    } badge ${
+                                      question.isAccepted
+                                        ? "badge-success"
+                                        : "badge-danger"
+                                    } badge-pill`}
+                                  >
+                                    {question.isAccepted
+                                      ? "Accepted"
+                                      : "Not Accepted"}
+                                  </span>
+                                </td>
+                              </tr>
+                            );
+                          })}
                         </tbody>
                       </Table>
                     </div>
