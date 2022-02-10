@@ -21,7 +21,7 @@
     "mdbreact": "^4.26.0",
     "metismenujs": "^1.1.0",
     "namor": "^2.0.2",
-    "node-sass": "^4.13.1",
+    "node-sass": "^7.0.0",
     "react": "^16.13.1",
     "react-ace": "^8.1.0",
     "react-datepicker": "^2.14.1",
